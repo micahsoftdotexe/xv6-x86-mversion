@@ -120,6 +120,7 @@ $K/entryother: $K/entryother.S
 
 $U/initcode: $U/initcode.S
 	$(CC) $(CFLAGS) -nostdinc -I. -c $U/initcode.S -o $U/initcode.o
+	objcopy --remove-section .note.gnu.property $U/initcode.o
 	$(LD) $(LDFLAGS) -N -e start -Ttext 0 -o $U/initcode.out $U/initcode.o
 	$(OBJCOPY) -S -O binary $U/initcode.out $U/initcode
 	$(OBJDUMP) -S $U/initcode.o > $U/initcode.asm
@@ -151,6 +152,7 @@ $K/vectors.S: $K/vectors.pl
 ULIB = $U/ulib.o $K/usys.o $U/printf.o $U/umalloc.o
 
 $U/_%: $U/%.o $(ULIB)
+	objcopy --remove-section .note.gnu.property $U/ulib.o
 	$(LD) $(LDFLAGS) -N -e main -Ttext 0 -o $@ $^
 	$(OBJDUMP) -S $@ > $*.asm
 	$(OBJDUMP) -t $@ | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > $*.sym
