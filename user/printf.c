@@ -93,7 +93,7 @@ fprintf(int fd, const char *fmt, ...)
 {
  va_list ap;
  va_start(ap, fmt); 
- vprintf(1,fmt,ap);
+ vprintf(fd,fmt,ap);
 }
 void
 printf(const char *fmt, ...)
